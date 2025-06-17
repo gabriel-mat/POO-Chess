@@ -5,6 +5,10 @@ public class Torre extends Peca{
         super(cor);
     }
 
+    public char getTipo(){
+        return 'R';
+    }
+
     public String desenho(){
         return "R";
     }

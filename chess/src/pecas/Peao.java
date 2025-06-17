@@ -5,6 +5,10 @@ public class Peao extends Peca{
         super(cor);
     }
 
+    public char getTipo(){
+        return 'P';
+    }
+
     public String desenho(){
         return "P";
     }

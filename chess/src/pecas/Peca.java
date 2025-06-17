@@ -11,6 +11,7 @@ public abstract class Peca {
         return cor;
     }
 
+    public abstract char getTipo();
     public abstract String desenho();
     public abstract boolean movimentoValido(int linhaO, char colunaO, int linhaD, char colunaD);
     public abstract String caminho(int linhaO, char colunaO, int linhaD, char colunaD);
