@@ -8,11 +8,11 @@ public class Cavalo extends Peca{
     }
 
     public char getTipo(){
-        return 'K';
+        return 'N';
     }
 
     public String desenho(){
-        return "K";
+        return "N";
     }
 
     public boolean movimentoValido(int linhaO, char colunaO, int linhaD, char colunaD){
