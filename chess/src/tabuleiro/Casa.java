@@ -41,4 +41,8 @@ public class Casa {
     public void setPeca(Peca peca){
         this.peca = peca;
     }
+
+    public boolean casaVazia(){
+        return peca == null;
+    }
 }
