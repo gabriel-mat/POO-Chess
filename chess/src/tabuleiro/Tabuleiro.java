@@ -29,9 +29,19 @@ public class Tabuleiro {
     }
 
     public String desenho(){
-        String tabuleiro = "";
-        //
-        return tabuleiro;
+        StringBuilder tabuleiro = new StringBuilder();
+
+        for(int i = 0; i < DIMENSAO; i++) {
+            for (int j = 0; j < DIMENSAO; j++) {
+                if (casas[i][j].getPeca() == null)
+                    tabuleiro.append(String.format("%2s ", "."));
+                else
+                    tabuleiro.append(String.format("%2s ", casas[i][j].getPeca().desenho()));
+            }
+            tabuleiro.append("\n");
+        }
+
+        return tabuleiro.toString();
     }
 
     public boolean casaOcupada(int linha, char coluna){
