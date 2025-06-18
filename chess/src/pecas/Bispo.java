@@ -12,7 +12,9 @@ public class Bispo extends Peca{
     }
 
     public String desenho(){
-        return "B";
+        if(getCor().equals("Branco"))
+            return "B";
+        return "b";
     }
 
     public boolean movimentoValido(int linhaO, char colunaO, int linhaD, char colunaD){

@@ -10,7 +10,9 @@ public class Dama extends Peca{
     }
 
     public String desenho(){
-        return "Q";
+        if(getCor().equals("Branco"))
+            return "Q";
+        return "q";
     }
 
     public boolean movimentoValido(int linhaO, char colunaO, int linhaD, char colunaD){

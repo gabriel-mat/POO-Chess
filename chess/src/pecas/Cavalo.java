@@ -12,7 +12,9 @@ public class Cavalo extends Peca{
     }
 
     public String desenho(){
-        return "N";
+        if(getCor().equals("Branco"))
+            return "N";
+        return "n";
     }
 
     public boolean movimentoValido(int linhaO, char colunaO, int linhaD, char colunaD){

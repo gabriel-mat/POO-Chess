@@ -10,7 +10,9 @@ public class Torre extends Peca{
     }
 
     public String desenho(){
-        return "R";
+        if(getCor().equals("Branco"))
+            return "R";
+        return "r";
     }
 
     public boolean movimentoValido(int linhaO, char colunaO, int linhaD, char colunaD){

@@ -10,7 +10,9 @@ public class Peao extends Peca{
     }
 
     public String desenho(){
-        return "P";
+        if(getCor().equals("Branco"))
+            return "P";
+        return "p";
     }
 
     public boolean movimentoValido(int linhaO, char colunaO, int linhaD, char colunaD){

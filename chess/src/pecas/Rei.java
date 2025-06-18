@@ -10,7 +10,9 @@ public class Rei extends Peca{
     }
 
     public String desenho(){
-        return "K";
+        if(getCor().equals("Branco"))
+            return "K";
+        return "k";
     }
 
     public boolean movimentoValido(int linhaO, char colunaO, int linhaD, char colunaD){
