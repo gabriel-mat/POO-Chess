@@ -24,7 +24,7 @@ public class Tabuleiro {
         }
     }
 
-    public boolean noLimite(int linha, char coluna){
+    public static boolean noLimite(int linha, char coluna){
         return (linha >= 1 && linha <= DIMENSAO && coluna >= 'a' && coluna < 'a' + DIMENSAO);
     }
 
