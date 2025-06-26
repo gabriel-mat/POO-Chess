@@ -14,7 +14,7 @@ public class Caminho {
         int tamanho = caminho.length();
 
         for(int i = 0; i < tamanho ; i+=2){
-            if(tabuleiro.casaOcupada(caminho.charAt(i), caminho.charAt(i + 1))){
+            if(tabuleiro.casaOcupada(caminho.charAt(i) - '0', caminho.charAt(i + 1))){
                 return false;
             }
         }
