@@ -25,7 +25,7 @@ public class Caminho {
         return casaInicial;
     }
 
-    public Casa casaFinal(){
+    public Casa casaFinal() {
         return casaFinal;
     }
 }
