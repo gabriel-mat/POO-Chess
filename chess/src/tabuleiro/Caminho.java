@@ -13,7 +13,7 @@ public class Caminho {
         String caminho = casaInicial.getPeca().caminho(casaInicial.getLinha(), casaInicial.getColuna(), casaFinal.getLinha(), casaFinal.getColuna());
         int tamanho = caminho.length();
 
-        for(int i = 0; i < tamanho ; i+=2){
+        for(int i = 2; i < tamanho - 2 ; i+=2){
             if(tabuleiro.casaOcupada(caminho.charAt(i) - '0', caminho.charAt(i + 1))){
                 return false;
             }
