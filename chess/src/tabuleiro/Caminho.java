@@ -1,15 +1,16 @@
 package tabuleiro;
 
 public class Caminho {
-    private Casa casaInicial;
-    private Casa casaFinal;
+    private Tabuleiro tabuleiro;
+    private Casa casaInicial, casaFinal;
 
-    public Caminho(Casa casaInicial, Casa casaFinal){
+    public Caminho(Casa casaInicial, Casa casaFinal, Tabuleiro tabuleiro){
         this.casaInicial = casaInicial;
         this.casaFinal = casaFinal;
+        this.tabuleiro = tabuleiro;
     }
 
-    public boolean estaLivre(Tabuleiro tabuleiro) {
+    public boolean estaLivre() {
         String caminho = casaInicial.getPeca().caminho(casaInicial.getLinha(), casaInicial.getColuna(), casaFinal.getLinha(), casaFinal.getColuna());
         int tamanho = caminho.length();
 
