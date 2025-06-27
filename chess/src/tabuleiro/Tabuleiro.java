@@ -59,4 +59,8 @@ public class Tabuleiro {
         casas[linha - 1][coluna - 'a'].setPeca(peca);
         return true;
     }
+
+    public Casa getCasa(int linha, char coluna){
+        return casas[linha - 1][coluna - 'a'];
+    }
 }
