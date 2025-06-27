@@ -27,7 +27,7 @@ public class Jogada {
         if(tabuleiro.casaOcupada(linhaD, colunaD) && tabuleiro.getPeca(linhaD, colunaD).getCor().equals(jogador.getCor()))
             return false;
 
-        if(tabuleiro.getPeca(linhaO, colunaO).getTipo() != 'N' && !caminho.estaLivre(tabuleiro));
+        if(tabuleiro.getPeca(linhaO, colunaO).getTipo() != 'N' && !caminho.estaLivre(tabuleiro))
             return false;
 
         if(!tabuleiro.getPeca(linhaO, colunaO).movimentoValido(linhaO, colunaO, linhaD, colunaD))
