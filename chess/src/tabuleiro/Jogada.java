@@ -5,6 +5,7 @@ public class Jogada {
     private final Tabuleiro tabuleiro;
     private final int linhaO, linhaD;
     private final char colunaO, colunaD;
+    private final Caminho caminho;
 
     public Jogada(Jogador jogador, Tabuleiro tabuleiro, int linhaO, char colunaO, int linhaD, char colunaD){
         this.tabuleiro = tabuleiro;
@@ -13,6 +14,7 @@ public class Jogada {
         this.colunaO = colunaO;
         this.linhaD = linhaD;
         this.colunaD = colunaD;
+        caminho = new Caminho(tabuleiro.getCasa(linhaO, colunaO), tabuleiro.getCasa(linhaD, colunaD));
     }
 
     public boolean ehValida(){
@@ -25,7 +27,8 @@ public class Jogada {
         if(tabuleiro.casaOcupada(linhaD, colunaD) && tabuleiro.getPeca(linhaD, colunaD).getCor().equals(jogador.getCor()))
             return false;
 
-        // verificar se caminho está livre, se não for um cavalo
+        if(tabuleiro.getPeca(linhaO, colunaO).getTipo() != 'N' && !caminho.estaLivre(tabuleiro));
+            return false;
 
         if(!tabuleiro.getPeca(linhaO, colunaO).movimentoValido(linhaO, colunaO, linhaD, colunaD))
             return false;
