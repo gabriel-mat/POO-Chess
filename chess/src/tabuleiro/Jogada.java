@@ -1,5 +1,7 @@
 package tabuleiro;
 
+import pecas.*;
+
 public class Jogada {
     private final Jogador jogador;
     private final Tabuleiro tabuleiro;
@@ -34,5 +36,37 @@ public class Jogada {
             return false;
 
         return true;
+    }
+
+    public boolean ehXeque(){
+        Caminho caminho;
+        Casa reiPreto, reiBranco;
+
+        caminho = null;
+        reiPreto = reiBranco = null;
+
+        for(int i = 1; i <= 8; i++)
+            for(char c = 'a'; c <= 'h'; c++)
+                if(tabuleiro.getPeca(i, c).getTipo() == 'K' && tabuleiro.getPeca(i, c).getCor().equals("Branco"))
+                    reiBranco = tabuleiro.getCasa(i, c);
+                else if (tabuleiro.getPeca(i, c).getTipo() == 'K' && tabuleiro.getPeca(i, c).getCor().equals("Preto"))
+                    reiPreto = tabuleiro.getCasa(i, c);
+
+
+        for(int i = 1; i <= 8; i++){
+            for(char c = 'a'; c <= 'h'; c++){
+                if(tabuleiro.getCasa(i, c) != reiBranco && tabuleiro.getPeca(i, c).getCor().equals("Branco")){
+                    caminho = new Caminho(tabuleiro.getCasa(i, c), reiPreto, tabuleiro);
+                    if(tabuleiro.getPeca(i, c).movimentoValido(i, c ,reiPreto.getLinha(), reiPreto.getColuna())
+                        && caminho.estaLivre())
+                        return true;
+                }
+                else if(tabuleiro.getCasa(i, c) != reiBranco && tabuleiro.getPeca(i, c).getCor().equals("Branco")){
+                    //
+                }
+            }
+        }
+
+        return false;
     }
 }
