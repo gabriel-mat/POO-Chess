@@ -2,13 +2,11 @@ package tabuleiro;
 
 public class Jogada {
     private final Jogador jogador;
-    private final Tabuleiro tabuleiro;
     private final int linhaO, linhaD;
     private final char colunaO, colunaD;
     private final Caminho caminho;
 
     public Jogada(Jogador jogador, Tabuleiro tabuleiro, int linhaO, char colunaO, int linhaD, char colunaD){
-        this.tabuleiro = tabuleiro;
         this.jogador = jogador;
         this.linhaO = linhaO;
         this.colunaO = colunaO;
@@ -17,7 +15,7 @@ public class Jogada {
         caminho = new Caminho(tabuleiro.getCasa(linhaO, colunaO), tabuleiro.getCasa(linhaD, colunaD));
     }
 
-    public boolean ehValida(){
+    public boolean ehValida(Tabuleiro tabuleiro){
         if(!Tabuleiro.noLimite(linhaO, colunaO) || !Tabuleiro.noLimite(linhaD, colunaD))
             return false;
 
