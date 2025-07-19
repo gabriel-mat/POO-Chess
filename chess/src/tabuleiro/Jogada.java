@@ -43,7 +43,7 @@ public class Jogada {
         if(jogador.getCor().equals("Branco")){
             for(int i = 1; i <= 8; i++){
                 for(char c = 'a'; c <= 'h'; c++) {
-                    if (tabuleiro.getPeca(i, c).getTipo() == 'k' && tabuleiro.getPeca(i, c).getCor().equals("Preto")) {
+                    if (tabuleiro.getPeca(i, c).getTipo() == 'K' && tabuleiro.getPeca(i, c).getCor().equals("Preto")) {
                         Casa reiPreto = tabuleiro.getCasa(i, c);
                         if (!tabuleiro.getPeca(linhaO, colunaO).movimentoValido(linhaO, colunaO, linhaD, colunaD)) {
                             return false;
