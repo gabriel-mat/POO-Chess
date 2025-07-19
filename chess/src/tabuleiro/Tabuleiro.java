@@ -31,15 +31,30 @@ public class Tabuleiro {
     public String desenho(){
         StringBuilder tabuleiro = new StringBuilder();
 
+        tabuleiro.append("\n      a  b  c  d  e  f  g  h\n\n");
+
         for(int i = 0; i < DIMENSAO; i++) {
             for (int j = 0; j < DIMENSAO; j++) {
-                if (casas[i][j].getPeca() == null)
+
+                if (casas[i][j].getPeca() == null) {
+                    if (j == 0)
+                        tabuleiro.append(String.format("%d    ", i + 1));
                     tabuleiro.append(String.format("%2s ", "."));
-                else
+                    if (j == DIMENSAO - 1)
+                        tabuleiro.append(String.format("    %d", i + 1));
+                }
+
+                else {
+                    if (j == 0)
+                        tabuleiro.append(String.format("%d    ", i + 1));
                     tabuleiro.append(String.format("%2s ", casas[i][j].getPeca().desenho()));
+                    if (j == DIMENSAO - 1)
+                        tabuleiro.append(String.format("    %d", i + 1));
+                }
             }
             tabuleiro.append("\n");
         }
+        tabuleiro.append("\n      a  b  c  d  e  f  g  h\n");
 
         return tabuleiro.toString();
     }
