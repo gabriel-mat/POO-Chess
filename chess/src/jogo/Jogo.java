@@ -16,6 +16,16 @@ public class Jogo {
         iniciarPecas();
     }
 
+    public void imprimir() {
+        System.out.println("Jogador 1: " + j1.getNome());
+        System.out.println("Peças capturadas: " + j1.pecasCapturadas());
+
+        System.out.println(tabuleiro.desenho());
+
+        System.out.println("Jogador 2: " + j2.getNome());
+        System.out.println("Peças capturadas: " + j2.pecasCapturadas());
+    }
+
     private void iniciarPecas(){
         int i = 0;
 
