@@ -61,11 +61,11 @@ public class Jogador {
     }
 
     public String pecasCapturadas(){
-        String s = "";
+        String s = null;
 
         for(int i = 0; i < numCapturadas; i++)
             s += capturadas[i] + " ";
 
-        return s.substring(0, s.length() - 1);
+        return s == null ? "-" : s.substring(0, s.length() - 1);
     }
 }
