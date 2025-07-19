@@ -19,6 +19,8 @@ public class Caminho {
     }
 
     public boolean estaLivre() {
+        if(casas.getFirst().getPeca().getTipo() == 'H')
+            return true;
         for(int i = 1; i < casas.size()-1; i++)
             if(!casas.get(i).casaVazia())
                 return false;
