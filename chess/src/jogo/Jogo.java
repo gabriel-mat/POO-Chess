@@ -8,10 +8,11 @@ public class Jogo {
     private Jogador j1, j2;
     private Peca[] pecas = new Peca[32];
 
-    public Jogo(){
+    public Jogo(String nome1, String nome2){
         int i = 0;
         this.tabuleiro = new Tabuleiro();
-        j1 = j2 = null;
+        j1 = new Jogador("Branco", nome1);
+        j2 = new Jogador("Preto", nome2);
         iniciarPecas();
     }
 
