@@ -16,7 +16,7 @@ public class Torre extends Peca{
     }
 
     public boolean movimentoValido(int linhaO, char colunaO, int linhaD, char colunaD){
-        return ((linhaO == linhaD) || (colunaO == colunaD));
+        return (!(linhaO == linhaD) && (colunaO == colunaD) || (linhaO == linhaD) && !(colunaO == colunaD));
     }
 
     public String caminho(int linhaO, char colunaO, int linhaD, char colunaD){

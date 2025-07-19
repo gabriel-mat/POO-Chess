@@ -17,7 +17,7 @@ public class Dama extends Peca{
 
     public boolean movimentoValido(int linhaO, char colunaO, int linhaD, char colunaD){
         return ((Math.abs(linhaD - linhaO) == Math.abs(colunaD - colunaO))
-                || ((linhaO == linhaD) || (colunaO == colunaD))) ;
+                || (!(linhaO == linhaD) && (colunaO == colunaD) || (linhaO == linhaD) && !(colunaO == colunaD))) ;
     }
 
     public String caminho(int linhaO, char colunaO, int linhaD, char colunaD){
