@@ -1,7 +1,5 @@
 package tabuleiro;
 
-import pecas.*;
-
 public class Jogada {
     private final Jogador jogador;
     private final Tabuleiro tabuleiro;
@@ -49,9 +47,8 @@ public class Jogada {
             for(char c = 'a'; c <= 'h'; c++)
                 if(tabuleiro.getPeca(i, c).getTipo() == 'K' && tabuleiro.getPeca(i, c).getCor().equals("Branco"))
                     reiBranco = tabuleiro.getCasa(i, c);
-                else if (tabuleiro.getPeca(i, c).getTipo() == 'K' && tabuleiro.getPeca(i, c).getCor().equals("Preto"))
+                else if (tabuleiro.getPeca(i, c).getTipo() == 'k' && tabuleiro.getPeca(i, c).getCor().equals("Preto"))
                     reiPreto = tabuleiro.getCasa(i, c);
-
 
         for(int i = 1; i <= 8; i++){
             for(char c = 'a'; c <= 'h'; c++){
