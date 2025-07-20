@@ -6,7 +6,10 @@ public class Caminho {
     private Tabuleiro tabuleiro;
     private ArrayList<Casa> casas;
 
-    public Caminho(Casa casaInicial, Casa casaFinal, Tabuleiro tabuleiro){
+    public Caminho(Casa casaInicial, Casa casaFinal, Tabuleiro tabuleiro) throws CasaDeOrigemVaziaException{
+        if (casaInicial.casaVazia()) {
+            throw new CasaDeOrigemVaziaException("Não é possível construir um caminho a partir de uma casa de origem vazia.");
+        }
         this.tabuleiro = tabuleiro;
         casas = new ArrayList<>();
         construirCaminho(casaInicial, casaFinal);
@@ -33,10 +36,16 @@ public class Caminho {
     }
 
     public Casa casaInicial() {
+        if (casas.isEmpty()) {
+            return null;
+        }
         return casas.getFirst();
     }
 
     public Casa casaFinal() {
+        if (casas.isEmpty()) {
+            return null;
+        }
         return casas.getLast();
     }
 }

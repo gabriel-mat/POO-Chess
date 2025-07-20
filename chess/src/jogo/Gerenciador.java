@@ -7,6 +7,7 @@ import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Scanner;
+import pecas.CorInvalidaException;
 
 public class Gerenciador {
     private Jogo jogo;
@@ -52,8 +53,13 @@ public class Gerenciador {
 
 
     private void novaPartida() {
-        this.jogo = new Jogo("Sandro", "Carlos");
-        System.out.println("Nova partida iniciada!");
+        try {
+            this.jogo = new Jogo("Sandro", "Carlos");
+            System.out.println("Nova partida iniciada!");
+        } catch (CorInvalidaException e) {
+            System.out.println("ERRO CRÍTICO: " + e.getMessage());
+            this.jogo = null;
+        }
     }
 
     private void carregarPartida() {
@@ -68,6 +74,12 @@ public class Gerenciador {
             this.jogo = null;
         } catch (IOException e) {
             System.out.println("ERRO: Não foi possível ler o arquivo: " + e.getMessage());
+            this.jogo = null;
+        } catch (FormatoArquivoInvalidoException e) {
+            System.out.println("ERRO: O arquivo de save está corrompido. " + e.getMessage());
+            this.jogo = null;
+        } catch (CorInvalidaException e) {
+            System.out.println("ERRO CRÍTICO: Dados de cor inválidos no sistema. " + e.getMessage());
             this.jogo = null;
         }
 
@@ -95,6 +107,12 @@ public class Gerenciador {
         while (!notacaoJogada.equalsIgnoreCase("Sair")) {
             this.jogo.imprimir();
             System.out.println("É a vez de " + this.jogo.estaNaVez().getNome());
+
+            if (this.jogo.ehXequeMate()) {
+                System.out.println("XEQUE-MATE! Fim de jogo.");
+                break;
+            }
+
             System.out.println("Digite sua jogada ou 'Sair' para terminar: ");
 
             notacaoJogada = this.jogo.estaNaVez().informaJogada();
@@ -102,16 +120,24 @@ public class Gerenciador {
             if (notacaoJogada.equalsIgnoreCase("Sair")) break;
 
             if (notacaoJogada.length() == 4) {
-                int linhaO = Character.getNumericValue(notacaoJogada.charAt(0));
-                char colunaO = notacaoJogada.charAt(1);
-                int linhaD = Character.getNumericValue(notacaoJogada.charAt(2));
-                char colunaD = notacaoJogada.charAt(3);
+                try {
+                    int linhaO = Character.getNumericValue(notacaoJogada.charAt(0));
+                    char colunaO = notacaoJogada.charAt(1);
+                    int linhaD = Character.getNumericValue(notacaoJogada.charAt(2));
+                    char colunaD = notacaoJogada.charAt(3);
 
-                System.out.println(String.format("%d%c%d%c", linhaO, colunaO, linhaD, colunaD));
-
-                this.jogo.realizarJogada(linhaO, colunaO, linhaD, colunaD);
+                    this.jogo.realizarJogada(linhaO, colunaO, linhaD, colunaD);
+                } catch (MovimentoInvalidoException e) {
+                    System.out.println("Erro: " + e.getMessage());
+                    System.out.println("Por favor, tente novamente.");
+                } catch (Exception e) { // Captura outros possíveis erros de parsing
+                    System.out.println("Formato de jogada inválido. Use o formato '1a3a'.");
+                }
+            } else {
+                System.out.println("Formato de jogada inválido. Use o formato '1a3a'.");
             }
         }
+
         if (this.jogo.ehXequeMate()) {
             System.out.println("Xeque Mate!");
         }

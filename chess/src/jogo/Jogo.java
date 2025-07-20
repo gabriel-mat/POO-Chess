@@ -13,7 +13,7 @@ public class Jogo {
     private List<Jogada> historicoJogadas;
     private int nJogadas;
 
-    public Jogo(String nome1, String nome2){
+    public Jogo(String nome1, String nome2)throws CorInvalidaException{
         int i = 0;
         this.tabuleiro = new Tabuleiro();
         j1 = new Jogador("Branco", nome1);
@@ -23,12 +23,16 @@ public class Jogo {
         nJogadas = 0;
 
     }
-    public Jogo(String historico) {
+    public Jogo(String historico) throws FormatoArquivoInvalidoException, CorInvalidaException{
         this.tabuleiro = new Tabuleiro();
         // vetor de strings extraido a partir do histórico, seperando por quebras de linha
         String[] linhas = historico.split("\n");
         iniciarPecas();
         this.historicoJogadas = new ArrayList<>();
+
+        if (linhas.length < 2) {
+            throw new FormatoArquivoInvalidoException("Arquivo não contém os nomes dos dois jogadores.");
+        }
 
         String[] dadosJ1 = linhas[0].split(" - ");
         this.j1 = new Jogador("Branco", dadosJ1[0]);
@@ -39,14 +43,19 @@ public class Jogo {
         // Refaz cada jogada do jogo anterior para restaurar o estado do tabuleiro
         for (int i = 2; i < linhas.length; i++){
             String notacaoJogada = linhas[i];
-            if (notacaoJogada.length() == 4) {
-                int linhaO = Character.getNumericValue(notacaoJogada.charAt(0));
-                char colunaO = notacaoJogada.charAt(1);
-                int linhaD = Character.getNumericValue(notacaoJogada.charAt(2));
-                char colunaD = notacaoJogada.charAt(3);
 
-                this.realizarJogada(linhaO, colunaO, linhaD, colunaD);
+            if (notacaoJogada.length() != 4) {
+                if (!notacaoJogada.trim().isEmpty()) {
+                    throw new FormatoArquivoInvalidoException("A jogada '" + notacaoJogada + "' registrada no histórico é inválida.");
+                }
+                continue;
             }
+            int linhaO = Character.getNumericValue(notacaoJogada.charAt(0));
+            char colunaO = notacaoJogada.charAt(1);
+            int linhaD = Character.getNumericValue(notacaoJogada.charAt(2));
+            char colunaD = notacaoJogada.charAt(3);
+
+            this.realizarJogada(linhaO, colunaO, linhaD, colunaD);
         }
 
     }
@@ -61,7 +70,7 @@ public class Jogo {
         System.out.println("Peças capturadas: " + j2.pecasCapturadas());
     }
 
-    private void iniciarPecas(){
+    private void iniciarPecas() throws CorInvalidaException{
         int i = 0;
 
         while(i < 8) {
@@ -175,10 +184,9 @@ public class Jogo {
      * @param linhaD  A linha de destino da peça.
      * @param colunaD A coluna de destino da peça.
      */
-    public void realizarJogada(int linhaO, char colunaO, int linhaD, char colunaD){
-        if (!jogadaValida(linhaO, colunaO, linhaD, colunaD)){
-            System.out.println("Jogada invalida");
-            return;
+    public void realizarJogada(int linhaO, char colunaO, int linhaD, char colunaD) throws MovimentoInvalidoException{
+        if (!jogadaValida(linhaO, colunaO, linhaD, colunaD)) {
+            throw new MovimentoInvalidoException("A jogada de " + linhaO + colunaO + " para " + linhaD + colunaD + " não é permitida.");
         }
 
         Jogador jogador = estaNaVez();

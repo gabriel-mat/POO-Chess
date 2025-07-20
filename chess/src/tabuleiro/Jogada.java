@@ -22,7 +22,11 @@ public class Jogada {
         caminho = new Caminho(tabuleiro.getCasa(linhaO, colunaO), tabuleiro.getCasa(linhaD, colunaD), tabuleiro);
     }
 
-    public boolean ehValida() {
+    public boolean ehValida() throws CasaDeOrigemVaziaException {
+        if (tabuleiro.getPeca(linhaO, colunaO) == null) {
+            throw new CasaDeOrigemVaziaException("A casa de origem " + linhaO + colunaO + " está vazia.");
+        }
+
         if (!Tabuleiro.noLimite(linhaO, colunaO) || !Tabuleiro.noLimite(linhaD, colunaD))
             return false;
 
@@ -70,7 +74,7 @@ public class Jogada {
                 if (casaAtual != null && !casaAtual.casaVazia() && casaAtual.getPeca().getCor().equals(oponente.getCor())) {
                     Peca pecaOponente = casaAtual.getPeca();
 
-                    if (pecaOponente.movimentoValido(casaAtual.getLinha(), casaAtual.getColuna(), casaDoRei.getLinha(), casaDoRei.getColuna(), this.tabuleiro)) {
+                    if (pecaOponente.movimentoValido(casaAtual.getLinha(), casaAtual.getColuna(), casaDoRei.getLinha(), casaDoRei.getColuna())) {
                         Caminho caminhoAtaque = new Caminho(casaAtual, casaDoRei, this.tabuleiro);
                         if (caminhoAtaque.estaLivre()) {
                             return true;
