@@ -66,4 +66,12 @@ public class Jogada {
 
         return false;
     }
+
+    /**
+     * Retorna a notação da jogada no formato para arquivo (ex: "1a3b").
+     * @return A string da jogada formatada para salvamento.
+     */
+    public String getNotacao() {
+        return "" + linhaO + colunaO + linhaD + colunaD;
+    }
 }
