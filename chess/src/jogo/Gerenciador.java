@@ -81,8 +81,6 @@ public class Gerenciador {
         System.out.println("Digite o nome do arquivo: ");
         String nomeArquivo = in.nextLine();
 
-        // tem que procurar
-
         try {
             String historico = new String(Files.readAllBytes(Paths.get(nomeArquivo)));
             jogo = new Jogo(historico);

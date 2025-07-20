@@ -1,7 +1,9 @@
 package jogo;
 
-import tabuleiro.*;
 import pecas.*;
+import tabuleiro.Jogada;
+import tabuleiro.Jogador;
+import tabuleiro.Tabuleiro;
 
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -13,7 +15,7 @@ public class Jogo {
     private ArrayList<Jogada> historicoJogadas;
     private int nJogadas;
 
-    public Jogo(String nome1, String nome2){
+    public Jogo(String nome1, String nome2) {
         this.tabuleiro = new Tabuleiro();
         j1 = new Jogador("Branco", nome1);
         j2 = new Jogador("Preto", nome2);
@@ -37,7 +39,7 @@ public class Jogo {
         this.j2 = new Jogador("Preto", dadosJ2[0]);
 
         // refaz cada jogada do jogo anterior para restaurar o estado do tabuleiro
-        for (int i = 2; i < linhas.length; i++){
+        for (int i = 2; i < linhas.length; i++) {
             String notacaoJogada = linhas[i];
             if (notacaoJogada.length() == 4) {
                 int linhaO = Character.getNumericValue(notacaoJogada.charAt(0));
@@ -50,17 +52,21 @@ public class Jogo {
         }
     }
 
-    public boolean ehXeque(){
-        Jogador jogadorInimigo = j1;
-        if (j1 == estaNaVez()) jogadorInimigo = j2;
-        return historicoJogadas.getLast().ehXeque(jogadorInimigo, tabuleiro);
+    public boolean ehXeque() {
+        Jogador jogadorAlvo = estaNaVez();
+        Jogador jogadorOponente = jogadorAlvo.equals(j1) ? j2 : j1;
+
+        return historicoJogadas.getLast().ehXeque(jogadorAlvo, jogadorOponente, tabuleiro);
     }
 
-    public boolean ehXequeMate(){
-        if(nJogadas == 0)
+    public boolean ehXequeMate() {
+        if (nJogadas == 0)
             return false;
 
-        return historicoJogadas.getLast().ehXequeMate(estaNaVez(), tabuleiro);
+        Jogador jogadorAlvo = estaNaVez();
+        Jogador jogadorOponente = jogadorAlvo.equals(j1) ? j2 : j1;
+
+        return historicoJogadas.getLast().ehXequeMate(jogadorAlvo, jogadorOponente, tabuleiro);
     }
 
     public int getnJogadas() {
@@ -70,7 +76,7 @@ public class Jogo {
 
     public void iniciarPartida(Scanner in) {
         String notacaoJogada = "";
-        while (!notacaoJogada.equalsIgnoreCase("parar")) {
+        while (!ehXequeMate() && !notacaoJogada.equalsIgnoreCase("parar")) {
             imprimir();
             System.out.println("É a vez de " + estaNaVez().getNome());
             notacaoJogada = estaNaVez().informaJogada();
@@ -104,39 +110,43 @@ public class Jogo {
         System.out.println("Peças capturadas: " + j2.pecasCapturadas() + "\n");
     }
 
-    public boolean jogadaValida(int linhaO, char colunaO, int linhaD, char colunaD){
-        if(!Tabuleiro.noLimite(linhaO, colunaO) || !Tabuleiro.noLimite(linhaD, colunaD))
+    public boolean jogadaValida(int linhaO, char colunaO, int linhaD, char colunaD) {
+        if (!Tabuleiro.noLimite(linhaO, colunaO) || !Tabuleiro.noLimite(linhaD, colunaD)) {
             return false;
-        Peca pecaOrigem = tabuleiro.getPeca( linhaO, colunaO );
+        }
 
-        // Checa se existe uma peça na casa de origem, para prevenir NullPointerException
+        Peca pecaOrigem = tabuleiro.getPeca(linhaO, colunaO);
         if (pecaOrigem == null) {
             return false;
         }
 
-        // Delega para a própria peça a validação do seu padrão de movimento.
-        if (!pecaOrigem.movimentoValido(linhaO, colunaO, linhaD, colunaD)) {
+        Jogador jogadorDaVez = estaNaVez();
+        Jogador jogadorOponente = jogadorDaVez.equals(j1) ? j2 : j1;
+
+        Jogada tentativa = new Jogada(jogadorDaVez, tabuleiro, linhaO, colunaO, linhaD, colunaD);
+        if (!tentativa.ehValida()) {
             return false;
         }
 
-        // Determina o jogador da vez.
-        Jogador jogador = estaNaVez();
+        Peca pecaDestinoOriginal = tabuleiro.getPeca(linhaD, colunaD);
 
-        // Checa se a peça movida pertence ao jogador da vez.
-        if(!pecaOrigem.getCor().equals(jogador.getCor()))
+        tabuleiro.colocarPeca(linhaD, colunaD, pecaOrigem);
+        tabuleiro.colocarPeca(linhaO, colunaO, null);
+
+        boolean ficouEmXeque = tentativa.ehXeque(jogadorDaVez, jogadorOponente, this.tabuleiro);
+
+        tabuleiro.colocarPeca(linhaO, colunaO, pecaOrigem);
+        tabuleiro.colocarPeca(linhaD, colunaD, pecaDestinoOriginal);
+
+        if (ficouEmXeque) {
             return false;
-
-        Peca pecaDestino = tabuleiro.getPeca(linhaD, colunaD);
-
-        // Checa se a casa de destino não está ocupada por uma peça amiga.
-        if(pecaDestino != null && pecaDestino.getCor().equals(jogador.getCor()))
-            return false;
+        }
 
         return true;
     }
 
-    public void realizarJogada(int linhaO, char colunaO, int linhaD, char colunaD){
-        if (!jogadaValida(linhaO, colunaO, linhaD, colunaD)){
+    public void realizarJogada(int linhaO, char colunaO, int linhaD, char colunaD) {
+        if (!jogadaValida(linhaO, colunaO, linhaD, colunaD)) {
             System.out.println("Jogada inválida!");
             return;
         }
@@ -157,13 +167,13 @@ public class Jogo {
         this.nJogadas++;
     }
 
-    public String registroJogo(){
+    public String registroJogo() {
         StringBuilder registro = new StringBuilder();
 
         registro.append(j1.getNome()).append("\n");
         registro.append(j2.getNome()).append("\n");
 
-        for (Jogada jogada: this.historicoJogadas)
+        for (Jogada jogada : this.historicoJogadas)
             registro.append(jogada.getNotacao()).append("\n");
 
         return registro.toString();
@@ -174,17 +184,17 @@ public class Jogo {
         else return j2;
     }
 
-    private void iniciarPecas(){
+    private void iniciarPecas() {
         int i = 0;
 
-        while(i < 8) {
+        while (i < 8) {
             pecas[i] = new Peao("Branco");
-            tabuleiro.colocarPeca(2, (char)('a' + i), pecas[i]);
+            tabuleiro.colocarPeca(2, (char) ('a' + i), pecas[i]);
             i++;
         }
-        while(i < 16) {
+        while (i < 16) {
             pecas[i] = new Peao("Preto");
-            tabuleiro.colocarPeca(7, (char)('a' + i - 8), pecas[i]);
+            tabuleiro.colocarPeca(7, (char) ('a' + i - 8), pecas[i]);
             i++;
         }
 
@@ -237,6 +247,11 @@ public class Jogo {
         tabuleiro.colocarPeca(8, 'e', pecas[i - 1]);
     }
 
-    public Jogador getJ1() { return j1; }
-    public Jogador getJ2() { return j2; }
+    public Jogador getJ1() {
+        return j1;
+    }
+
+    public Jogador getJ2() {
+        return j2;
+    }
 }
