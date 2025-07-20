@@ -19,29 +19,24 @@ public class Torre extends Peca{
         return (!(linhaO == linhaD) && (colunaO == colunaD) || (linhaO == linhaD) && !(colunaO == colunaD));
     }
 
-    public String caminho(int linhaO, char colunaO, int linhaD, char colunaD){
-        String retorno = "";
+    @Override
+    public String caminho(int linhaO, char colunaO, int linhaD, char colunaD) {
+        StringBuilder caminho = new StringBuilder();
 
-        if(!movimentoValido(linhaO, colunaO, linhaD, colunaD))
-            return retorno;
-
-        if(linhaO != linhaD){
-            if(linhaO < linhaD)
-                for(int i = linhaO; i <= linhaD; i++)
-                    retorno += i + colunaO;
-            else
-                for(int i = linhaO; i >= linhaD; i--)
-                    retorno += i + colunaO;
+        // Movimento Vertical
+        if (colunaO == colunaD) {
+            int direcao = (linhaD > linhaO) ? 1 : -1; // Define se está subindo (1) ou descendo (-1)
+            for (int i = linhaO + direcao; i != linhaD; i += direcao) {
+                caminho.append(i).append(colunaO);
+            }
         }
-        else{
-            if(colunaO < colunaD)
-                for(char i = colunaO; i <= colunaD; i++)
-                    retorno += linhaO + i;
-            else
-                for(char i = colunaO; i >= colunaD; i--)
-                    retorno += linhaO + i;
+        // Movimento Horizontal
+        else if (linhaO == linhaD) {
+            int direcao = (colunaD > colunaO) ? 1 : -1; // Define se está indo para a direita (1) ou esquerda (-1)
+            for (char i = (char)(colunaO + direcao); i != colunaD; i = (char)(i + direcao)) {
+                caminho.append(linhaO).append(i);
+            }
         }
-
-        return retorno;
+        return caminho.toString();
     }
 }

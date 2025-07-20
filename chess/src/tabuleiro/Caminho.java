@@ -15,7 +15,7 @@ public class Caminho {
     private void construirCaminho(Casa inicio, Casa fim) {
         String c = inicio.getPeca().caminho(inicio.getLinha(), inicio.getColuna(), fim.getLinha(), fim.getColuna());
         for (int i = 0; i < c.length(); i+=2)
-            casas.add(tabuleiro.getCasa(c.charAt(i) - '0', c.charAt(i + 1)));
+            casas.add(tabuleiro.getCasa(Character.getNumericValue(c.charAt(i)), c.charAt(i + 1)));
     }
 
     public boolean estaLivre() {

@@ -112,5 +112,6 @@ public class Gerenciador {
                 this.jogo.realizarJogada(linhaO, colunaO, linhaD, colunaD);
             }
         }
+        salvarPartida();
     }
 }

@@ -20,45 +20,35 @@ public class Dama extends Peca{
                 || (!(linhaO == linhaD) && (colunaO == colunaD) || (linhaO == linhaD) && !(colunaO == colunaD))) ;
     }
 
-    public String caminho(int linhaO, char colunaO, int linhaD, char colunaD){
-        String retorno = "";
-
-        if(!movimentoValido(linhaO, colunaO, linhaD, colunaD))
-            return retorno;
-
-        if(colunaO == colunaD){
-            if(linhaO < linhaD)
-                for(int i = linhaO; i <= linhaD; i++)
-                    retorno += i + colunaO;
-            else
-                for(int i = linhaO; i >= linhaD; i--)
-                    retorno += i + colunaO;
+    @Override
+    public String caminho(int linhaO, char colunaO, int linhaD, char colunaD) {
+        if (linhaO == linhaD || colunaO == colunaD) {
+            StringBuilder caminho = new StringBuilder();
+            if (colunaO == colunaD) {
+                int direcao = (linhaD > linhaO) ? 1 : -1;
+                for (int i = linhaO + direcao; i != linhaD; i += direcao) {
+                    caminho.append(i).append(colunaO);
+                }
+            } else {
+                int direcao = (colunaD > colunaO) ? 1 : -1;
+                for (char i = (char)(colunaO + direcao); i != colunaD; i = (char)(i + direcao)) {
+                    caminho.append(linhaO).append(i);
+                }
+            }
+            return caminho.toString();
         }
-        else if (linhaO == linhaD){
-            if(colunaO < colunaD)
-                for(char i = colunaO; i <= colunaD; i++)
-                    retorno += linhaO + i;
-            else
-                for(char i = colunaO; i >= colunaD; i--)
-                    retorno += linhaO + i;
+        else {
+            StringBuilder caminho = new StringBuilder();
+            int dirLinha = (linhaD > linhaO) ? 1 : -1;
+            int dirColuna = (colunaD > colunaO) ? 1 : -1;
+            int linhaAtual = linhaO + dirLinha;
+            char colunaAtual = (char)(colunaO + dirColuna);
+            while (linhaAtual != linhaD && colunaAtual != colunaD) {
+                caminho.append(linhaAtual).append(colunaAtual);
+                linhaAtual += dirLinha;
+                colunaAtual = (char)(colunaAtual + dirColuna);
+            }
+            return caminho.toString();
         }
-        else if(linhaD > linhaO){
-            if(colunaD > colunaO)
-                for(int i = linhaO; i <= linhaD; i++)
-                    retorno += i + colunaO++;
-            else
-                for(int i = linhaO; i <= linhaD; i++)
-                    retorno += i + colunaO--;
-        }else{
-            if(colunaD > colunaO)
-                for(int i = linhaO; i >= linhaD; i--)
-                    retorno += i + colunaO++;
-            else
-                for(int i = linhaO; i >= linhaD; i--)
-                    retorno += i + colunaO--;
-        }
-
-        retorno += linhaD + colunaD;
-        return retorno;
     }
 }
