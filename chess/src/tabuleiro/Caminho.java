@@ -19,7 +19,7 @@ public class Caminho {
     }
 
     public boolean estaLivre() {
-        if(casas.getFirst().getPeca().getTipo() == 'H')
+        if(casas.getFirst().getPeca().getTipo() == 'N') // altera para cavalo (N)
             return true;
         for(int i = 1; i < casas.size()-1; i++)
             if(!casas.get(i).casaVazia())
