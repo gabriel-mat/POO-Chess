@@ -13,10 +13,11 @@ public class Jogo {
     private List<Jogada> historicoJogadas;
     private int nJogadas;
 
-    public Jogo(){
+    public Jogo(String nome1, String nome2){
         int i = 0;
         this.tabuleiro = new Tabuleiro();
-        j1 = j2 = null;
+        j1 = new Jogador("Branco", nome1);
+        j2 = new Jogador("Preto", nome2);
         iniciarPecas();
         this.historicoJogadas = new ArrayList<>();
         nJogadas = 0;
@@ -42,6 +43,16 @@ public class Jogo {
             }
         }
 
+    }
+
+    public void imprimir() {
+        System.out.println("Jogador 1: " + j1.getNome());
+        System.out.println("Peças capturadas: " + j1.pecasCapturadas());
+
+        System.out.println(tabuleiro.desenho());
+
+        System.out.println("Jogador 2: " + j2.getNome());
+        System.out.println("Peças capturadas: " + j2.pecasCapturadas());
     }
 
     private void iniciarPecas(){
