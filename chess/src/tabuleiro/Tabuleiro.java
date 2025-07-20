@@ -72,7 +72,10 @@ public class Tabuleiro {
             casas[linha - 1][coluna - 'a'].setPeca(peca);
     }
 
-    public Casa getCasa(int linha, char coluna){
+    public Casa getCasa(int linha, char coluna) throws CoordenadaInvalidaException {
+        if (!noLimite(linha, coluna)) {
+            throw new CoordenadaInvalidaException("A coordenada " + linha + coluna + " está fora dos limites do tabuleiro.");
+        }
         return casas[linha - 1][coluna - 'a'];
     }
 }

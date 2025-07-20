@@ -4,7 +4,10 @@ public abstract class Peca {
     private final String cor;
     private boolean viva;
 
-    public Peca(String cor){
+    public Peca(String cor) throws CorInvalidaException{
+        if (cor == null || (!cor.equals("Branco") && !cor.equals("Preto"))) {
+            throw new CorInvalidaException("A cor '" + cor + "' é inválida. A cor deve ser 'Branco' ou 'Preto'.");
+        }
         this.cor = cor;
         this.viva = true;
     }
