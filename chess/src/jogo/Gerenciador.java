@@ -6,77 +6,99 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Gerenciador {
     private Jogo jogo;
 
     public static void main(String[] args) {
-        Scanner s = new Scanner(System.in);
+        Scanner in = new Scanner(System.in);
         Gerenciador g = new Gerenciador();
-        g.iniciar(s);
+        g.iniciar(in);
     }
 
-    public void iniciar(Scanner s) {
-        System.out.println("\n --- Jogo de Xadrez ---");
+    private void mostrarMenu() {
         System.out.println("1. Nova partida");
         System.out.println("2. Carregar Partida");
         System.out.println("3. Encerrar");
         System.out.print("Escolha uma opção: ");
+    }
 
-        int op = 0;
-        while (op < 1 || op > 3) {
+    private static int lerInt(Scanner in) {
+        int dado;
+        while (true) {
             try {
-                op = Integer.parseInt(s.nextLine());
-            } catch (NumberFormatException e) {
-                System.out.println("Selecione um número entre 1 a 5 para realizar uma ação");
+                dado = in.nextInt();
+                in.nextLine();
+                return dado;
+            } catch (InputMismatchException e) {
+                System.out.println("Entrada inválida. Digite um número inteiro.\n");
+                in.nextLine();
             }
+        }
+    }
+
+    public void iniciar(Scanner in) {
+        System.out.println("\n ------ Jogo de Xadrez ------");
+
+        while(true) {
+            mostrarMenu();
+            int op = lerInt(in);
+
             switch (op) {
                 case 1:
-                    this.novaPartida();
-                    iniciarPartida(s);
+                    novaPartida(in);
+                    jogo.iniciarPartida(in);
                     break;
                 case 2:
-                    carregarPartida();
-                    iniciarPartida(s);
+                    carregarPartida(in);
+                    jogo.iniciarPartida(in);
                     break;
                 case 3:
-                    this.salvarPartida();
-                    System.out.println("Encerrando!");
+                    salvarPartida();
+                    System.out.println("Encerrando...");
                     return;
                 default:
-                    System.out.println("Opção inválida, escolha uma opção entre 1-3.");
+                    System.out.println("Opção inválida. Escolha uma nova opção.");
             }
         }
     }
 
 
-    private void novaPartida() {
-        this.jogo = new Jogo("Sandro", "Carlos");
+    private void novaPartida(Scanner in) {
+        System.out.println("Digite o nome do Jogador 1 (peças brancas): ");
+        String nome1 = in.nextLine();
+
+        System.out.println("Digite o nome do Jogador 2 (peças pretas): ");
+        String nome2 = in.nextLine();
+
+        jogo = new Jogo(nome1, nome2);
         System.out.println("Nova partida iniciada!");
     }
 
-    private void carregarPartida() {
-        String arquivo = "historico.txt";
-        try {
-            String historico = new String(Files.readAllBytes(Paths.get(arquivo)));
+    private void carregarPartida(Scanner in) {
+        System.out.println("Digite o nome do arquivo: ");
+        String nomeArquivo = in.nextLine();
 
-            this.jogo = new Jogo(historico);
+        // tem que procurar
+
+        try {
+            String historico = new String(Files.readAllBytes(Paths.get(nomeArquivo)));
+            jogo = new Jogo(historico);
             System.out.println("Jogo carregado com sucesso");
         } catch (FileNotFoundException e) {
-            System.out.println("ERRO: Arquivo não encontrado: " + arquivo);
-            this.jogo = null;
+            System.out.println("Erro. Arquivo não encontrado: " + nomeArquivo);
+            jogo = null;
         } catch (IOException e) {
-            System.out.println("ERRO: Não foi possível ler o arquivo: " + e.getMessage());
-            this.jogo = null;
+            System.out.println("Erro. Não foi possível ler o arquivo: " + e.getMessage());
+            jogo = null;
         }
-
     }
 
     private void salvarPartida() {
-        if (this.jogo == null) {
+        if (jogo == null)
             return;
-        }
 
         String historico = jogo.registroJogo();
 
@@ -84,38 +106,8 @@ public class Gerenciador {
             writer.print(historico);
             System.out.println("Jogo salvo com sucesso!");
         } catch (IOException e) {
-            System.out.println("ERRO: Não foi possível salvar o jogo no arquivo: " + e.getMessage());
+            System.out.println("Erro. Não foi possível salvar o jogo no arquivo: " + e.getMessage());
         }
     }
 
-    private void iniciarPartida(Scanner s) {
-        if (this.jogo == null) return;
-
-        String notacaoJogada = "";
-        while (!notacaoJogada.equalsIgnoreCase("Sair")) {
-            this.jogo.imprimir();
-            System.out.println("É a vez de " + this.jogo.estaNaVez().getNome());
-            System.out.println("Digite sua jogada ou 'Sair' para terminar: ");
-
-            notacaoJogada = this.jogo.estaNaVez().informaJogada();
-
-            if (notacaoJogada.equalsIgnoreCase("Sair")) break;
-
-            if (notacaoJogada.length() == 4) {
-                int linhaO = Character.getNumericValue(notacaoJogada.charAt(0));
-                char colunaO = notacaoJogada.charAt(1);
-                int linhaD = Character.getNumericValue(notacaoJogada.charAt(2));
-                char colunaD = notacaoJogada.charAt(3);
-
-                System.out.println(String.format("%d%c%d%c", linhaO, colunaO, linhaD, colunaD));
-
-                this.jogo.realizarJogada(linhaO, colunaO, linhaD, colunaD);
-            }
-        }
-        if (this.jogo.ehXequeMate()) {
-            System.out.println("Xeque Mate!");
-        }
-        this.jogo.imprimir();
-        // salvarPartida();
-    }
 }

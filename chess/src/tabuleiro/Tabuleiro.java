@@ -67,12 +67,9 @@ public class Tabuleiro {
         return casas[linha - 1][coluna - 'a'].getPeca();
     }
 
-    public boolean colocarPeca(int linha, char coluna, Peca peca){
-        if(!noLimite(linha, coluna))
-            return false;
-
-        casas[linha - 1][coluna - 'a'].setPeca(peca);
-        return true;
+    public void colocarPeca(int linha, char coluna, Peca peca){
+        if(noLimite(linha, coluna))
+            casas[linha - 1][coluna - 'a'].setPeca(peca);
     }
 
     public Casa getCasa(int linha, char coluna){

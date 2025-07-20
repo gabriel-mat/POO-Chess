@@ -1,23 +1,19 @@
 package tabuleiro;
 import pecas.*;
-import jogo.Jogo;
 
 public class Jogada {
-    private Jogo jogo;
-
     private final Jogador jogador;
     private final Tabuleiro tabuleiro;
     private final int linhaO, linhaD;
     private final char colunaO, colunaD;
     private final Caminho caminho;
 
-    public Jogada(Jogador jogador, Jogo jogo, Tabuleiro tabuleiro, int linhaO, char colunaO, int linhaD, char colunaD) {
+    public Jogada(Jogador jogador, Tabuleiro tabuleiro, int linhaO, char colunaO, int linhaD, char colunaD) {
         this.jogador = jogador;
         this.linhaO = linhaO;
         this.colunaO = colunaO;
         this.linhaD = linhaD;
         this.colunaD = colunaD;
-        this.jogo = jogo;
         this.tabuleiro = tabuleiro;
         caminho = new Caminho(tabuleiro.getCasa(linhaO, colunaO), tabuleiro.getCasa(linhaD, colunaD), tabuleiro);
     }
@@ -41,21 +37,19 @@ public class Jogada {
         return true;
     }
 
-    /**
-     * Verifica se o rei de um determinado jogador está sob ataque (em xeque).
-     * A implementação está em Jogada.java conforme solicitado.
-     * @param jogadorAlvo O jogador cujo rei será verificado.
-     * @return true se o rei do jogador estiver em xeque, false caso contrário.
-     */
-    public boolean ehXeque(Jogador jogadorAlvo) {
+
+    public boolean ehXeque(Jogador jogadorAlvo, Tabuleiro tabuleiro) {
         Casa casaDoRei = null;
 
         for (int i = 1; i <= 8; i++) {
             for (char j = 'a'; j <= 'h'; j++) {
-                Casa casa = this.tabuleiro.getCasa(i, j);
-                if (casa != null && !casa.casaVazia() && casa.getPeca().getCor().equals(jogadorAlvo.getCor()) && casa.getPeca().getTipo() == 'K') {
-                    casaDoRei = casa;
-                    break;
+                Casa casa = tabuleiro.getCasa(i, j);
+                if (casa != null && !casa.casaVazia()) {
+                    Peca peca = casa.getPeca();
+                    if (peca.getCor().equals(jogadorAlvo.getCor()) && peca.getTipo() == 'K') {
+                        casaDoRei = casa;
+                        break;
+                    }
                 }
             }
             if (casaDoRei != null) break;
@@ -63,17 +57,19 @@ public class Jogada {
 
         if (casaDoRei == null) return false;
 
-        Jogador oponente = (jogadorAlvo == jogo.getJ1()) ? jogo.getJ2() : jogo.getJ1();
+        String corOponente = jogadorAlvo.getCor().equals("Branco") ? "Preto" : "Branco";
+
         for (int i = 1; i <= 8; i++) {
             for (char j = 'a'; j <= 'h'; j++) {
-                Casa casaAtual = this.tabuleiro.getCasa(i, j);
-                if (casaAtual != null && !casaAtual.casaVazia() && casaAtual.getPeca().getCor().equals(oponente.getCor())) {
-                    Peca pecaOponente = casaAtual.getPeca();
-
-                    if (pecaOponente.movimentoValido(casaAtual.getLinha(), casaAtual.getColuna(), casaDoRei.getLinha(), casaDoRei.getColuna(), this.tabuleiro)) {
-                        Caminho caminhoAtaque = new Caminho(casaAtual, casaDoRei, this.tabuleiro);
-                        if (caminhoAtaque.estaLivre()) {
-                            return true;
+                Casa casa = tabuleiro.getCasa(i, j);
+                if (casa != null && !casa.casaVazia()) {
+                    Peca peca = casa.getPeca();
+                    if (peca.getCor().equals(corOponente)) {
+                        if (peca.movimentoValido(i, j, casaDoRei.getLinha(), casaDoRei.getColuna())) {
+                            Caminho caminho = new Caminho(casa, casaDoRei, tabuleiro);
+                            if (caminho.estaLivre()) {
+                                return true;
+                            }
                         }
                     }
                 }
@@ -82,38 +78,36 @@ public class Jogada {
         return false;
     }
 
-    /**
-     * Verifica se o jogador da vez está em xeque-mate.
-     * A implementação está em Jogada.java conforme solicitado.
-     */
-    public boolean ehXequeMate() {
-        Jogador jogadorDaVez = jogo.estaNaVez();
-        if (!this.ehXeque(jogadorDaVez)) {
+    public boolean ehXequeMate(Jogador jogadorDaVez, Tabuleiro tabuleiro) {
+        if (!ehXeque(jogadorDaVez, tabuleiro)) {
             return false;
         }
 
         for (int i = 1; i <= 8; i++) {
             for (char j = 'a'; j <= 'h'; j++) {
-                Casa casaOrigem = this.tabuleiro.getCasa(i, j);
-                if (casaOrigem != null && !casaOrigem.casaVazia() && casaOrigem.getPeca().getCor().equals(jogadorDaVez.getCor())) {
-                    Peca pecaAtual = casaOrigem.getPeca();
+                Casa origem = tabuleiro.getCasa(i, j);
+                if (origem != null && !origem.casaVazia()) {
+                    Peca pecaAtual = origem.getPeca();
+                    if (pecaAtual.getCor().equals(jogadorDaVez.getCor())) {
 
-                    for (int k = 1; k <= 8; k++) {
-                        for (char l = 'a'; l <= 'h'; l++) {
+                        for (int k = 1; k <= 8; k++) {
+                            for (char l = 'a'; l <= 'h'; l++) {
+                                if (pecaAtual.movimentoValido(i, j, k, l)) {
+                                    Peca destinoOriginal = tabuleiro.getPeca(k, l);
 
-                            if (jogo.jogadaValida(i, j, k, l)) {
+                                    // Simula o movimento
+                                    tabuleiro.colocarPeca(k, l, pecaAtual);
+                                    tabuleiro.colocarPeca(i, j, null);
 
-                                Peca pecaDestinoOriginal = this.tabuleiro.getPeca(k, l);
-                                this.tabuleiro.colocarPeca(k, l, pecaAtual);
-                                this.tabuleiro.colocarPeca(i, j, null);
+                                    boolean aindaEmXeque = ehXeque(jogadorDaVez, tabuleiro);
 
-                                boolean aindaEmXeque = this.ehXeque(jogadorDaVez);
+                                    // Desfaz o movimento
+                                    tabuleiro.colocarPeca(i, j, pecaAtual);
+                                    tabuleiro.colocarPeca(k, l, destinoOriginal);
 
-                                this.tabuleiro.colocarPeca(i, j, pecaAtual);
-                                this.tabuleiro.colocarPeca(k, l, pecaDestinoOriginal);
-
-                                if (!aindaEmXeque) {
-                                    return false;
+                                    if (!aindaEmXeque) {
+                                        return false; // Existe jogada de escape
+                                    }
                                 }
                             }
                         }
@@ -121,14 +115,9 @@ public class Jogada {
                 }
             }
         }
-        return true;
+        return true; // Não existe jogada de escape -> xeque-mate
     }
 
-    /**
-     * Retorna a notação da jogada no formato para arquivo (ex: "1a3b").
-     *
-     * @return A string da jogada formatada para salvamento.
-     */
     public String getNotacao() {
         return "" + linhaO + colunaO + linhaD + colunaD;
     }
