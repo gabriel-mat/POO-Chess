@@ -92,12 +92,12 @@ public class Gerenciador {
         if (this.jogo == null) return;
 
         String notacaoJogada = "";
-        while (!this.jogo.ehXequeMate() && !notacaoJogada.equalsIgnoreCase("Sair")) {
+        while (!notacaoJogada.equalsIgnoreCase("Sair")) {
             this.jogo.imprimir();
             System.out.println("É a vez de " + this.jogo.estaNaVez().getNome());
             System.out.println("Digite sua jogada ou 'Sair' para terminar: ");
 
-            notacaoJogada = s.nextLine();
+            notacaoJogada = this.jogo.estaNaVez().informaJogada();
 
             if (notacaoJogada.equalsIgnoreCase("Sair")) break;
 
@@ -112,6 +112,10 @@ public class Gerenciador {
                 this.jogo.realizarJogada(linhaO, colunaO, linhaD, colunaD);
             }
         }
-        salvarPartida();
+        if (this.jogo.ehXequeMate()) {
+            System.out.println("Xeque Mate!");
+        }
+        this.jogo.imprimir();
+        // salvarPartida();
     }
 }

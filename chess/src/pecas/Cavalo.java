@@ -23,29 +23,35 @@ public class Cavalo extends Peca{
     }
 
     public String caminho(int linhaO, char colunaO, int linhaD, char colunaD){
-        String retorno = "";
 
-        if(!movimentoValido(linhaO, colunaO, linhaD, colunaD))
-            return retorno;
-
-        if(Math.abs(linhaO - linhaD) == 1 && Math.abs(colunaO - colunaD) == 2){
-            if(colunaD > colunaO)
-                for(char i = colunaO; i <= colunaD; i++)
-                    retorno += linhaO + i;
-            else
-                for(char i = colunaO; i >= colunaD; i--)
-                    retorno += linhaO + i;
-        }
-        else{
-            if(linhaD > linhaO)
-                for(int i = linhaO; i <= linhaD; i++)
-                    retorno += i + colunaO;
-            else
-                for(int i = linhaO; i >= linhaD; i--)
-                    retorno += i + colunaO;
+        if (!movimentoValido(linhaO, colunaO, linhaD, colunaD)) {
+            return "";
         }
 
-        retorno += linhaD + colunaD;
-        return retorno;
+        StringBuilder caminho = new StringBuilder();
+        int deltaLinha = linhaD - linhaO;
+        int deltaColuna = colunaD - colunaO;
+
+        if (Math.abs(deltaLinha) == 2) {
+            int dirLinha = deltaLinha > 0 ? 1 : -1;
+
+            caminho.append(linhaO).append(colunaO);
+
+            caminho.append(linhaO + dirLinha).append(colunaO);
+
+            caminho.append(linhaD).append(colunaD);
+        }
+
+        else {
+            int dirColuna = deltaColuna > 0 ? 1 : -1;
+
+            caminho.append(linhaO).append(colunaO);
+
+            caminho.append(linhaO).append((char)(colunaO + dirColuna));
+
+            caminho.append(linhaD).append(colunaD);
+        }
+
+        return caminho.toString();
     }
 }

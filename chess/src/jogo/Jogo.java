@@ -134,84 +134,36 @@ public class Jogo {
      * @param colunaD A coluna de destino da peça (ex: 'a' a 'h').
      * @return {@code true} se a jogada for válida, {@code false} caso contrário.
      */
-//    public boolean jogadaValida(int linhaO, char colunaO, int linhaD, char colunaD){
-//        if(!Tabuleiro.noLimite(linhaO, colunaO) || !Tabuleiro.noLimite(linhaD, colunaD))
-//            return false;
-//        Peca pecaOrigem = tabuleiro.getPeca( linhaO, colunaO );
-//
-//        // Checa se existe uma peça na casa de origem, para prevenir NullPointerException
-//        if (pecaOrigem == null) {
-//            return false;
-//        }
-//
-//        // Delega para a própria peça a validação do seu padrão de movimento.
-//        if (!pecaOrigem.movimentoValido(linhaO, colunaO, linhaD, colunaD)) {
-//            return false;
-//        }
-//
-//        // Determina o jogador da vez.
-//        Jogador jogador = estaNaVez();
-//
-//        // Checa se a peça movida pertence ao jogador da vez.
-//        if(!pecaOrigem.getCor().equals(jogador.getCor()))
-//            return false;
-//
-//        Peca pecaDestino = tabuleiro.getPeca(linhaD, colunaD);
-//
-//        // Checa se a casa de destino não está ocupada por uma peça amiga.
-//        if(pecaDestino != null && pecaDestino.getCor().equals(jogador.getCor()))
-//            return false;
-//
-//        return true;
-//
-//    }
-    // método com output no terminal, feito somente para testes, remover na implementação final
-    public boolean jogadaValida(int linhaO, char colunaO, int linhaD, char colunaD) {
-        System.out.println("\n--- DEBUG: Validando jogada " + linhaO + colunaO + " para " + linhaD + colunaD + " ---");
-
-        System.out.println("1. Verificando limites do tabuleiro...");
-        if (!Tabuleiro.noLimite(linhaO, colunaO) || !Tabuleiro.noLimite(linhaD, colunaD)) {
-            System.out.println("--> FALHA: Jogada fora dos limites do tabuleiro.");
+    public boolean jogadaValida(int linhaO, char colunaO, int linhaD, char colunaD){
+        if(!Tabuleiro.noLimite(linhaO, colunaO) || !Tabuleiro.noLimite(linhaD, colunaD))
             return false;
-        }
-        System.out.println("   OK: Dentro dos limites.");
+        Peca pecaOrigem = tabuleiro.getPeca( linhaO, colunaO );
 
-        Peca pecaOrigem = tabuleiro.getPeca(linhaO, colunaO);
-        System.out.println("2. Verificando se existe peça na origem...");
-        System.out.println("   Peça encontrada: " + pecaOrigem); // Isso imprimirá null ou o nome da peça
+        // Checa se existe uma peça na casa de origem, para prevenir NullPointerException
         if (pecaOrigem == null) {
-            System.out.println("--> FALHA: Não há nenhuma peça na casa de origem.");
             return false;
         }
-        System.out.println("   OK: Peça existe.");
 
-        System.out.println("3. Verificando o padrão de movimento da peça (" + pecaOrigem.getClass().getSimpleName() + ")...");
+        // Delega para a própria peça a validação do seu padrão de movimento.
         if (!pecaOrigem.movimentoValido(linhaO, colunaO, linhaD, colunaD)) {
-            System.out.println("--> FALHA: O método 'movimentoValido' da peça retornou false.");
             return false;
         }
-        System.out.println("   OK: Padrão de movimento da peça é válido.");
 
+        // Determina o jogador da vez.
         Jogador jogador = estaNaVez();
-        System.out.println("4. Verificando o turno do jogador...");
-        System.out.println("   É a vez de: " + jogador.getNome() + " (Cor: " + jogador.getCor() + ")");
-        System.out.println("   Cor da peça movida: " + pecaOrigem.getCor());
-        if (!pecaOrigem.getCor().equals(jogador.getCor())) {
-            System.out.println("--> FALHA: A peça não pertence ao jogador da vez.");
+
+        // Checa se a peça movida pertence ao jogador da vez.
+        if(!pecaOrigem.getCor().equals(jogador.getCor()))
             return false;
-        }
-        System.out.println("   OK: Peça pertence ao jogador correto.");
 
         Peca pecaDestino = tabuleiro.getPeca(linhaD, colunaD);
-        System.out.println("5. Verificando se há peça amiga no destino...");
-        if (pecaDestino != null && pecaDestino.getCor().equals(jogador.getCor())) {
-            System.out.println("--> FALHA: Casa de destino ocupada por uma peça amiga.");
-            return false;
-        }
-        System.out.println("   OK: Destino livre ou ocupado por inimigo.");
 
-        System.out.println("--- SUCESSO: A jogada é considerada VÁLIDA ---");
+        // Checa se a casa de destino não está ocupada por uma peça amiga.
+        if(pecaDestino != null && pecaDestino.getCor().equals(jogador.getCor()))
+            return false;
+
         return true;
+
     }
     /**
      * Executa uma jogada, caso ela seja válida.
@@ -232,7 +184,7 @@ public class Jogo {
         Jogador jogador = estaNaVez();
 
         // Cria o objeto Jogada e o armazena
-        Jogada novaJogada = new Jogada(jogador, tabuleiro, linhaO, colunaO, linhaD, colunaD);
+        Jogada novaJogada = new Jogada(jogador, this, tabuleiro, linhaO, colunaO, linhaD, colunaD);
 
         Peca pecaMovida = tabuleiro.getPeca(linhaO, colunaO);
         Peca pecaCapturada = tabuleiro.getPeca(linhaD, colunaD);
@@ -269,13 +221,12 @@ public class Jogo {
         return registro.toString();
     }
 
-    public boolean ehXequeMate() {
-        // Ainda precisa ser implementado, adicionado somente para testar o jogo
-        return false;
-    }
 
     public Jogador estaNaVez() {
         if (nJogadas % 2 == 0) return j1;
         else return j2;
     }
+
+    public Jogador getJ1() { return j1; }
+    public Jogador getJ2() { return j2; }
 }
