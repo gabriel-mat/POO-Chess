@@ -22,11 +22,11 @@ public class Caminho {
     }
 
     public boolean estaLivre() {
-        if (casas.isEmpty()) {
+        if (casas.size() <= 2) {  // não existem casas intermediárias, portanto o caminho está livre
             return true;
         }
 
-        for (Casa casa : casas) {
+        for (Casa casa : casas.subList(1, casas.size() - 1)) { // verifca somente para casas intermediárias
             if (!casa.casaVazia()) {
                 return false;
             }
