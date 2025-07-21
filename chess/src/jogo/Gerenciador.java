@@ -93,6 +93,9 @@ public class Gerenciador {
             String historico = new String(Files.readAllBytes(Paths.get(nomeArquivo)));
             jogo = new Jogo(historico);
             System.out.println("Jogo carregado com sucesso");
+        } catch (java.nio.file.InvalidPathException e) {
+            System.out.println("Erro. O nome do arquivo digitado contém caracteres inválidos.");
+            jogo = null;
         } catch (FileNotFoundException e) {
             System.out.println("Erro. Arquivo não encontrado: " + nomeArquivo);
             jogo = null;
