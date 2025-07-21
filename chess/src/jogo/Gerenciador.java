@@ -50,12 +50,10 @@ public class Gerenciador {
 
             switch (op) {
                 case 1:
-                    novaPartida(in);
-                    jogo.iniciarPartida(in);
+                    if(novaPartida(in)) jogo.iniciarPartida(in);
                     break;
                 case 2:
-                    carregarPartida(in);
-                    jogo.iniciarPartida(in);
+                    if (carregarPartida(in)) jogo.iniciarPartida(in);
                     break;
                 case 3:
                     salvarPartida(in);
@@ -68,7 +66,7 @@ public class Gerenciador {
     }
 
 
-    private void novaPartida(Scanner in) {
+    private boolean novaPartida(Scanner in) {
         try {
             System.out.println("Digite o nome do Jogador 1 (peças brancas): ");
             String nome1 = in.nextLine();
@@ -78,14 +76,15 @@ public class Gerenciador {
 
             jogo = new Jogo(nome1, nome2);
             System.out.println("Nova partida iniciada!");
+            return true;
         } catch (CorInvalidaException e) {
             System.out.println("ERRO CRÍTICO: " + e.getMessage());
-
             this.jogo = null;
+            return false;
         }
     }
 
-    private void carregarPartida(Scanner in) {
+    private boolean carregarPartida(Scanner in) {
         String nomeArquivo;
 
         while (true) {
@@ -93,7 +92,7 @@ public class Gerenciador {
             nomeArquivo = in.nextLine();
 
             if (nomeArquivo.equalsIgnoreCase("parar"))
-                return;
+                return false;
             if (Files.exists(Paths.get(nomeArquivo)))
                 break;
 
@@ -104,20 +103,18 @@ public class Gerenciador {
             String historico = new String(Files.readAllBytes(Paths.get(nomeArquivo)));
             jogo = new Jogo(historico);
             System.out.println("Jogo carregado com sucesso");
+            return true;
         } catch (FileNotFoundException e) {
             System.out.println("Erro. Arquivo não encontrado: " + nomeArquivo);
-            jogo = null;
         } catch (IOException e) {
             System.out.println("Erro. Não foi possível ler o arquivo: " + e.getMessage());
-            jogo = null;
         } catch (FormatoArquivoInvalidoException e) {
             System.out.println("ERRO: O arquivo de save está corrompido. " + e.getMessage());
-            this.jogo = null;
         } catch (CorInvalidaException e) {
             System.out.println("ERRO CRÍTICO: Dados de cor inválidos no sistema. " + e.getMessage());
-            this.jogo = null;
-
         }
+        jogo = null;
+        return false;
     }
 
     private void salvarPartida(Scanner in) {

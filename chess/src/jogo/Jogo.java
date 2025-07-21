@@ -81,7 +81,6 @@ public class Jogo {
         return nJogadas;
     }
 
-
     public void iniciarPartida(Scanner in) {
         String notacaoJogada = "";
         while (!ehXequeMate() && !notacaoJogada.equalsIgnoreCase("parar")) {
@@ -153,11 +152,7 @@ public class Jogo {
         tabuleiro.colocarPeca(linhaO, colunaO, pecaOrigem);
         tabuleiro.colocarPeca(linhaD, colunaD, pecaDestinoOriginal);
 
-        if (ficouEmXeque) {
-            return false;
-        }
-
-        return true;
+        return !ficouEmXeque;
     }
 
     public void realizarJogada(int linhaO, char colunaO, int linhaD, char colunaD)  throws MovimentoInvalidoException{
