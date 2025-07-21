@@ -125,22 +125,19 @@ public class Jogo {
     }
 
     public boolean jogadaValida(int linhaO, char colunaO, int linhaD, char colunaD) {
-        if (!Tabuleiro.noLimite(linhaO, colunaO) || !Tabuleiro.noLimite(linhaD, colunaD)) {
+        if (!Tabuleiro.noLimite(linhaO, colunaO) || !Tabuleiro.noLimite(linhaD, colunaD))
             return false;
-        }
 
         Peca pecaOrigem = tabuleiro.getPeca(linhaO, colunaO);
-        if (pecaOrigem == null) {
+        if (pecaOrigem == null)
             return false;
-        }
 
         Jogador jogadorDaVez = estaNaVez();
         Jogador jogadorOponente = jogadorDaVez.equals(j1) ? j2 : j1;
 
         Jogada tentativa = new Jogada(jogadorDaVez, tabuleiro, linhaO, colunaO, linhaD, colunaD);
-        if (!tentativa.ehValida()) {
+        if (!tentativa.ehValida())
             return false;
-        }
 
         Peca pecaDestinoOriginal = tabuleiro.getPeca(linhaD, colunaD);
 
@@ -151,6 +148,9 @@ public class Jogo {
 
         tabuleiro.colocarPeca(linhaO, colunaO, pecaOrigem);
         tabuleiro.colocarPeca(linhaD, colunaD, pecaDestinoOriginal);
+
+        if (ficouEmXeque)
+            System.out.println("Em xeque!");
 
         return !ficouEmXeque;
     }

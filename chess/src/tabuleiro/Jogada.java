@@ -26,46 +26,34 @@ public class Jogada {
         if (!Tabuleiro.noLimite(linhaO, colunaO) || !Tabuleiro.noLimite(linhaD, colunaD))
             return false;
 
-        // Checa se existe uma peça na casa de origem, para prevenir NullPointerException
-        if (pecaOrigem == null) {
+        if (pecaOrigem == null)
             throw new CasaDeOrigemVaziaException("A casa de origem " + linhaO + colunaO + " está vazia.");
-        }
 
-        // Checa se a peça movida pertence ao jogador da vez
-        if (!pecaOrigem.getCor().equals(jogador.getCor())) {
+        if (!pecaOrigem.getCor().equals(jogador.getCor()))
             return false;
-        }
 
-        // Checa se a casa de destino não está ocupada por uma peça amiga.
         if (pecaDestino != null && pecaDestino.getCor().equals(jogador.getCor()))
             return false;
 
-        // Delega para a própria peça a validação do seu padrão de movimento.
-        if (!pecaOrigem.movimentoValido(linhaO, colunaO, linhaD, colunaD)) {
+        if (!pecaOrigem.movimentoValido(linhaO, colunaO, linhaD, colunaD))
             return false;
-        }
 
-        if (pecaOrigem.getTipo() != 'N' && !caminho.estaLivre()) {
+        if (pecaOrigem.getTipo() != 'N' && !caminho.estaLivre())
             return false;
-        }
 
-        // Regra específica do peão: se movimento for diagonal, só pode se for captura
         if (pecaOrigem.getTipo() == 'P') {
             int deltaColuna = colunaD - colunaO;
             if (Math.abs(deltaColuna) == 1) {
-                if (pecaDestino == null || pecaDestino.getCor().equals(jogador.getCor())) {
-                    return false; // tentou capturar no vazio ou peça amiga
-                }
+                if (pecaDestino == null || pecaDestino.getCor().equals(jogador.getCor()))
+                    return false;
             } else {
-                if (pecaDestino != null) {
-                    return false; // tentou andar pra frente mas tinha peça no caminho
-                }
+                if (pecaDestino != null)
+                    return false;
             }
         }
 
         return true;
     }
-
 
     public boolean ehXeque(Jogador jogadorAlvo, Jogador jogadorOponente, Tabuleiro tabuleiro) {
         Casa casaDoRei = null;
@@ -86,7 +74,6 @@ public class Jogada {
 
         if (casaDoRei == null) return false;
 
-
         for (int i = 1; i <= 8; i++) {
             for (char j = 'a'; j <= 'h'; j++) {
                 Casa casaAtual = this.tabuleiro.getCasa(i, j);
@@ -95,9 +82,8 @@ public class Jogada {
 
                     if (pecaOponente.movimentoValido(casaAtual.getLinha(), casaAtual.getColuna(), casaDoRei.getLinha(), casaDoRei.getColuna())) {
                         Caminho caminhoAtaque = new Caminho(casaAtual, casaDoRei, this.tabuleiro);
-                        if (caminhoAtaque.estaLivre()) {
+                        if (caminhoAtaque.estaLivre())
                             return true;
-                        }
                     }
                 }
             }
@@ -106,9 +92,8 @@ public class Jogada {
     }
 
     public boolean ehXequeMate(Jogador jogadorAlvo, Jogador jogadorOponente, Tabuleiro tabuleiro) {
-        if (!ehXeque(jogadorAlvo, jogadorOponente, tabuleiro)) {
+        if (!ehXeque(jogadorAlvo, jogadorOponente, tabuleiro))
             return false;
-        }
 
         for (int i = 1; i <= 8; i++) {
             for (char j = 'a'; j <= 'h'; j++) {
@@ -121,14 +106,12 @@ public class Jogada {
                 for (int k = 1; k <= 8; k++) {
                     for (char l = 'a'; l <= 'h'; l++) {
 
-                        if (!pecaAtual.movimentoValido(i, j, k, l)) {
+                        if (!pecaAtual.movimentoValido(i, j, k, l))
                             continue;
-                        }
 
                         Peca pecaDestino = tabuleiro.getPeca(k, l);
-                        if (pecaDestino != null && pecaDestino.getCor().equals(jogadorAlvo.getCor())) {
+                        if (pecaDestino != null && pecaDestino.getCor().equals(jogadorAlvo.getCor()))
                             continue;
-                        }
 
                         Jogada tentativa = new Jogada(jogadorAlvo, tabuleiro, i, j, k, l);
 
@@ -143,16 +126,15 @@ public class Jogada {
                             tabuleiro.colocarPeca(i, j, pecaAtual);
                             tabuleiro.colocarPeca(k, l, destinoOriginal);
 
-                            if (!aindaEmXeque) {
-                                return false; // Existe jogada de escape
-                            }
+                            if (!aindaEmXeque)
+                                return false;
                         }
                     }
                 }
             }
         }
 
-        return true; // Não existe jogada de escape -> xeque-mate
+        return true;
     }
 
     public String getNotacao() {

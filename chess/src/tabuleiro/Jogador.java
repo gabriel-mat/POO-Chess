@@ -6,7 +6,6 @@ import pecas.Peca;
 public class Jogador {
     private int numPecas;
     private int numCapturadas;
-    private boolean emXeque;
     private final String cor, nome;
     private Peca[] pecas = new Peca[16];
     private char[] capturadas = new char[16];
@@ -14,7 +13,6 @@ public class Jogador {
     public Jogador(String cor, String nome){
         this.cor = cor;
         this.nome = nome;
-        this.emXeque = false;
         numCapturadas = numPecas = 0;
 
         for(int i = 0; i < 16; i++) {
@@ -69,13 +67,5 @@ public class Jogador {
             s += capturadas[i] + " ";
 
         return s == "" ? "-" : s.substring(0, s.length() - 1);
-    }
-
-    public boolean isEmXeque() {
-        return emXeque;
-    }
-
-    public void setEmXeque(boolean emXeque) {
-        this.emXeque = emXeque;
     }
 }
