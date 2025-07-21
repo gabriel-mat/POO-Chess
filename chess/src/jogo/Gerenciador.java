@@ -58,7 +58,7 @@ public class Gerenciador {
                     jogo.iniciarPartida(in);
                     break;
                 case 3:
-                    salvarPartida();
+                    salvarPartida(in);
                     System.out.println("Encerrando...");
                     return;
                 default:
@@ -109,15 +109,35 @@ public class Gerenciador {
         }
     }
 
-    private void salvarPartida() {
+    private void salvarPartida(Scanner in) {
         if (jogo == null)
             return;
 
+        System.out.print("Digite o nome do arquivo para salvar (ex: jogo1.txt): ");
+        String nomeArquivo = in.nextLine().trim();
+
+        if (nomeArquivo.isEmpty()) {
+            System.out.println("Nome de arquivo inválido.");
+            return;
+        }
+
+        if (!nomeArquivo.endsWith(".txt"))
+            nomeArquivo += ".txt";
+
+        File arquivo = new File(nomeArquivo);
+        if (arquivo.exists()) {
+            System.out.print("Arquivo já existe. Deseja sobrescrevê-lo? (s/n): ");
+            if (!in.nextLine().equalsIgnoreCase("s")) {
+                System.out.println("Salvamento cancelado.");
+                return;
+            }
+        }
+
         String historico = jogo.registroJogo();
 
-        try (PrintWriter writer = new PrintWriter(new File("historico.txt"))) {
+        try (PrintWriter writer = new PrintWriter(arquivo)) {
             writer.print(historico);
-            System.out.println("Jogo salvo com sucesso!");
+            System.out.println("Jogo salvo com sucesso em \"" + nomeArquivo + "\"!");
         } catch (IOException e) {
             System.out.println("Erro. Não foi possível salvar o jogo no arquivo: " + e.getMessage());
         }
