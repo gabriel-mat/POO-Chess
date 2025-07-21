@@ -15,10 +15,14 @@ public class Peao extends Peca{
         return "p";
     }
 
-    public boolean movimentoValido(int linhaO, char colunaO, int linhaD, char colunaD){
-        if(getCor().equals("Branco"))
-            return ((colunaO == colunaD) && (linhaD == linhaO + 1));
-        return ((colunaO == colunaD) && (linhaD == linhaO - 1));
+    public boolean movimentoValido(int linhaO, char colunaO, int linhaD, char colunaD) {
+        if (getCor().equals("Branco"))
+            return ((colunaO == colunaD) && (linhaD == linhaO + 1)) ||
+                    ((Math.abs(colunaD - colunaO) == 1) && (linhaD == linhaO + 1));
+
+        return ((colunaO == colunaD) && (linhaD == linhaO - 1)) ||
+                ((Math.abs(colunaD - colunaO) == 1) && (linhaD == linhaO - 1));
+
     }
 
     public String caminho(int linhaO, char colunaO, int linhaD, char colunaD){

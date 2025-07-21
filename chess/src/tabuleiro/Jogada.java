@@ -36,6 +36,20 @@ public class Jogada {
             return false;
         }
 
+        // Regra específica do peão: se movimento for diagonal, só pode se for captura
+        if (pecaOrigem.getTipo() == 'P') {
+            int deltaColuna = colunaD - colunaO;
+            if (deltaColuna == 1) {
+                if (pecaDestino == null || pecaDestino.getCor().equals(jogador.getCor())) {
+                    return false; // tentou capturar no vazio ou peça amiga
+                }
+            } else {
+                if (pecaDestino != null) {
+                    return false; // tentou andar pra frente mas tinha peça no caminho
+                }
+            }
+        }
+
         // Checa se a peça movida pertence ao jogador da vez.
         if (!pecaOrigem.getCor().equals(jogador.getCor()))
             return false;
