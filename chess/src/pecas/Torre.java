@@ -22,6 +22,7 @@ public class Torre extends Peca{
     @Override
     public String caminho(int linhaO, char colunaO, int linhaD, char colunaD) {
         StringBuilder caminho = new StringBuilder();
+        caminho.append(linhaO).append(colunaO);
 
         // Movimento Vertical
         if (colunaO == colunaD) {
@@ -37,6 +38,7 @@ public class Torre extends Peca{
                 caminho.append(linhaO).append(i);
             }
         }
+        caminho.append(linhaD).append(colunaD);
         return caminho.toString();
     }
 }

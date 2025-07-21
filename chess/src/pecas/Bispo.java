@@ -23,6 +23,7 @@ public class Bispo extends Peca {
     @Override
     public String caminho(int linhaO, char colunaO, int linhaD, char colunaD) {
         StringBuilder caminho = new StringBuilder();
+        caminho.append(linhaO).append(colunaO);
 
         // Define a direção do movimento na diagonal
         int dirLinha = (linhaD > linhaO) ? 1 : -1;
@@ -36,6 +37,7 @@ public class Bispo extends Peca {
             linhaAtual += dirLinha;
             colunaAtual = (char) (colunaAtual + dirColuna);
         }
+        caminho.append(linhaD).append(colunaD);
 
         return caminho.toString();
     }
