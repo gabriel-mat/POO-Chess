@@ -23,7 +23,7 @@ public class Gerenciador {
     private void mostrarMenu() {
         System.out.println("1. Nova partida");
         System.out.println("2. Carregar Partida");
-        System.out.println("3. Encerrar");
+        System.out.println("3. Salvar partida e Encerrar");
         System.out.print("Escolha uma opção: ");
     }
 
