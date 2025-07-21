@@ -90,7 +90,11 @@ public class Jogo {
 
             if (notacaoJogada.equalsIgnoreCase("parar")) break;
 
-            if (notacaoJogada.length() == 4) {
+            if (notacaoJogada.length() == 4
+                && notacaoJogada.charAt(0) >= 1   && notacaoJogada.charAt(0) <= 8
+                && notacaoJogada.charAt(1) >= 'a' && notacaoJogada.charAt(1) <= 'h'
+                && notacaoJogada.charAt(2) >= 1   && notacaoJogada.charAt(2) <= 8
+                && notacaoJogada.charAt(3) >= 'a' && notacaoJogada.charAt(3) <= 'h') {
                 try {
                     int linhaO = Character.getNumericValue(notacaoJogada.charAt(0));
                     char colunaO = notacaoJogada.charAt(1);
@@ -157,7 +161,7 @@ public class Jogo {
 
     public void realizarJogada(int linhaO, char colunaO, int linhaD, char colunaD)  throws MovimentoInvalidoException{
         if (!jogadaValida(linhaO, colunaO, linhaD, colunaD)) {
-            throw new MovimentoInvalidoException("A jogada de " + linhaO + colunaO + " para " + linhaD + colunaD + " não é permitida.");
+            throw new MovimentoInvalidoException(String.format("A jogada de %d%c para %d%c não é permitida.", linhaO, colunaO, linhaD, colunaD));
         }
 
         Jogador jogador = estaNaVez();
