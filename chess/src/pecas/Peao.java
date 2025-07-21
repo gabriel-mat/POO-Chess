@@ -31,7 +31,7 @@ public class Peao extends Peca{
         String retorno = "";
 
         if(!movimentoValido(linhaO, colunaO, linhaD, colunaD))
-            return retorno;
+            return "";
 
         return retorno + linhaO + colunaO + linhaD + colunaD;
     }

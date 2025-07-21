@@ -24,6 +24,9 @@ public class Torre extends Peca{
         StringBuilder caminho = new StringBuilder();
         caminho.append(linhaO).append(colunaO);
 
+        if(!movimentoValido(linhaO, colunaO, linhaD, colunaD))
+            return "";
+
         // Movimento Vertical
         if (colunaO == colunaD) {
             int direcao = (linhaD > linhaO) ? 1 : -1; // Define se está subindo (1) ou descendo (-1)

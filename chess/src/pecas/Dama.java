@@ -22,6 +22,9 @@ public class Dama extends Peca{
 
     @Override
     public String caminho(int linhaO, char colunaO, int linhaD, char colunaD) {
+        if(!movimentoValido(linhaO, colunaO, linhaD, colunaD))
+            return "";
+
         if (linhaO == linhaD || colunaO == colunaD) {
             StringBuilder caminho = new StringBuilder();
             caminho.append(linhaO).append(colunaO);

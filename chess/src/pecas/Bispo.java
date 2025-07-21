@@ -25,6 +25,9 @@ public class Bispo extends Peca {
         StringBuilder caminho = new StringBuilder();
         caminho.append(linhaO).append(colunaO);
 
+        if(!movimentoValido(linhaO, colunaO, linhaD, colunaD))
+            return "";
+
         // Define a direção do movimento na diagonal
         int dirLinha = (linhaD > linhaO) ? 1 : -1;
         int dirColuna = (colunaD > colunaO) ? 1 : -1;
