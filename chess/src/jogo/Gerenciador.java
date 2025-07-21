@@ -86,8 +86,17 @@ public class Gerenciador {
     }
 
     private void carregarPartida(Scanner in) {
-        System.out.println("Digite o nome do arquivo: ");
-        String nomeArquivo = in.nextLine();
+        String nomeArquivo;
+
+        while (true) {
+            System.out.println("Digite o nome do arquivo: ");
+            nomeArquivo = in.nextLine();
+
+            if (Files.exists(Paths.get(nomeArquivo)))
+                break;
+
+            System.out.println("Arquivo não encontrado. Tente novamente.\n");
+        }
 
         try {
             String historico = new String(Files.readAllBytes(Paths.get(nomeArquivo)));
