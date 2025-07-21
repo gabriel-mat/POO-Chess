@@ -45,12 +45,16 @@ public class Jogo {
         // refaz cada jogada do jogo anterior para restaurar o estado do tabuleiro
         for (int i = 2; i < linhas.length; i++) {
             String notacaoJogada = linhas[i];
-            if (notacaoJogada.length() != 4) {
-                if (!notacaoJogada.trim().isEmpty()) {
-                    throw new FormatoArquivoInvalidoException("A jogada '" + notacaoJogada + "' registrada no histórico é inválida.");
-                }
+
+            if (notacaoJogada == null || notacaoJogada.trim().isEmpty())
                 continue;
+
+            if (!notacaoJogada.matches("[1-8][a-h][1-8][a-h]")) {
+                throw new FormatoArquivoInvalidoException(
+                        "A jogada '" + notacaoJogada + "' registrada no histórico é inválida."
+                );
             }
+
             int linhaO = Character.getNumericValue(notacaoJogada.charAt(0));
             char colunaO = notacaoJogada.charAt(1);
             int linhaD = Character.getNumericValue(notacaoJogada.charAt(2));
@@ -91,9 +95,9 @@ public class Jogo {
             if (notacaoJogada.equalsIgnoreCase("parar")) break;
 
             if (notacaoJogada.length() == 4
-                && notacaoJogada.charAt(0) >= 1   && notacaoJogada.charAt(0) <= 8
+                && notacaoJogada.charAt(0) >= '1'   && notacaoJogada.charAt(0) <= '8'
                 && notacaoJogada.charAt(1) >= 'a' && notacaoJogada.charAt(1) <= 'h'
-                && notacaoJogada.charAt(2) >= 1   && notacaoJogada.charAt(2) <= 8
+                && notacaoJogada.charAt(2) >= '1'  && notacaoJogada.charAt(2) <= '8'
                 && notacaoJogada.charAt(3) >= 'a' && notacaoJogada.charAt(3) <= 'h') {
                 try {
                     int linhaO = Character.getNumericValue(notacaoJogada.charAt(0));
