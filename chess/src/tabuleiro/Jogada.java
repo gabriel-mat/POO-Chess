@@ -39,7 +39,7 @@ public class Jogada {
         // Regra específica do peão: se movimento for diagonal, só pode se for captura
         if (pecaOrigem.getTipo() == 'P') {
             int deltaColuna = colunaD - colunaO;
-            if (deltaColuna == 1) {
+            if (Math.abs(deltaColuna) == 1) {
                 if (pecaDestino == null || pecaDestino.getCor().equals(jogador.getCor())) {
                     return false; // tentou capturar no vazio ou peça amiga
                 }
