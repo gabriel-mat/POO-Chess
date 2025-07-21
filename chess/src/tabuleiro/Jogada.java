@@ -19,21 +19,15 @@ public class Jogada {
         caminho = new Caminho(tabuleiro.getCasa(linhaO, colunaO), tabuleiro.getCasa(linhaD, colunaD), tabuleiro);
     }
 
-    public boolean ehValida()  throws CasaDeOrigemVaziaException {
+    public boolean ehValida() throws CasaDeOrigemVaziaException {
         Peca pecaOrigem = tabuleiro.getPeca(linhaO, colunaO);
         Peca pecaDestino = tabuleiro.getPeca(linhaD, colunaD);
 
         if (!Tabuleiro.noLimite(linhaO, colunaO) || !Tabuleiro.noLimite(linhaD, colunaD))
             return false;
 
-        // Checa se existe uma peça na casa de origem, para prevenir NullPointerException
         if (pecaOrigem == null) {
             throw new CasaDeOrigemVaziaException("A casa de origem " + linhaO + colunaO + " está vazia.");
-        }
-
-        // Delega para a própria peça a validação do seu padrão de movimento.
-        if (!pecaOrigem.movimentoValido(linhaO, colunaO, linhaD, colunaD)) {
-            return false;
         }
 
         // Checa se a peça movida pertence ao jogador da vez.
@@ -43,6 +37,15 @@ public class Jogada {
         // Checa se a casa de destino não está ocupada por uma peça amiga.
         if (pecaDestino != null && pecaDestino.getCor().equals(jogador.getCor()))
             return false;
+
+        // Delega para a própria peça a validação do seu padrão de movimento.
+        if (!pecaOrigem.movimentoValido(linhaO, colunaO, linhaD, colunaD)) {
+            return false;
+        }
+
+        if (pecaOrigem.getTipo() != 'N' && !caminho.estaLivre()) {
+            return false;
+        }
 
         return true;
     }
@@ -125,6 +128,7 @@ public class Jogada {
                             tabuleiro.colocarPeca(k, l, destinoOriginal);
 
                             if (!aindaEmXeque) {
+                                System.out.println(tentativa.getNotacao()); //deve ser removido, apenas para corrigir xequeMate
                                 return false; // Existe jogada de escape
                             }
                         }
