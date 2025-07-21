@@ -1,7 +1,7 @@
 package pecas;
 
 public class Rei extends Peca{
-    public Rei(String cor){
+    public Rei(String cor) throws CorInvalidaException {
         super(cor);
     }
 

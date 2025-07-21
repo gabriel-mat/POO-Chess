@@ -1,5 +1,7 @@
 package jogo;
 
+import pecas.CorInvalidaException;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -42,7 +44,7 @@ public class Gerenciador {
     public void iniciar(Scanner in) {
         System.out.println("\n ------ Jogo de Xadrez ------");
 
-        while(true) {
+        while (true) {
             mostrarMenu();
             int op = lerInt(in);
 
@@ -67,14 +69,20 @@ public class Gerenciador {
 
 
     private void novaPartida(Scanner in) {
-        System.out.println("Digite o nome do Jogador 1 (peças brancas): ");
-        String nome1 = in.nextLine();
+        try {
+            System.out.println("Digite o nome do Jogador 1 (peças brancas): ");
+            String nome1 = in.nextLine();
 
-        System.out.println("Digite o nome do Jogador 2 (peças pretas): ");
-        String nome2 = in.nextLine();
+            System.out.println("Digite o nome do Jogador 2 (peças pretas): ");
+            String nome2 = in.nextLine();
 
-        jogo = new Jogo(nome1, nome2);
-        System.out.println("Nova partida iniciada!");
+            jogo = new Jogo(nome1, nome2);
+            System.out.println("Nova partida iniciada!");
+        } catch (CorInvalidaException e) {
+            System.out.println("ERRO CRÍTICO: " + e.getMessage());
+
+            this.jogo = null;
+        }
     }
 
     private void carregarPartida(Scanner in) {
@@ -91,6 +99,13 @@ public class Gerenciador {
         } catch (IOException e) {
             System.out.println("Erro. Não foi possível ler o arquivo: " + e.getMessage());
             jogo = null;
+        } catch (FormatoArquivoInvalidoException e) {
+            System.out.println("ERRO: O arquivo de save está corrompido. " + e.getMessage());
+            this.jogo = null;
+        } catch (CorInvalidaException e) {
+            System.out.println("ERRO CRÍTICO: Dados de cor inválidos no sistema. " + e.getMessage());
+            this.jogo = null;
+
         }
     }
 

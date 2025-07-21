@@ -1,7 +1,7 @@
 package pecas;
 
 public class Bispo extends Peca {
-    public Bispo(String cor) {
+    public Bispo(String cor) throws CorInvalidaException {
         super(cor);
     }
 
@@ -19,30 +19,7 @@ public class Bispo extends Peca {
         return (Math.abs(linhaD - linhaO) == Math.abs(colunaD - colunaO));
     }
 
-    //    public String caminho(int linhaO, char colunaO, int linhaD, char colunaD){
-//        String retorno = "";
-//
-//        if(!movimentoValido(linhaO, colunaO, linhaD, colunaD))
-//            return retorno;
-//
-//        if(linhaD > linhaO){
-//            if(colunaD > colunaO)
-//                for(int i = linhaO; i <= linhaD; i++)
-//                    retorno += i + colunaO++;
-//            else
-//                for(int i = linhaO; i <= linhaD; i++)
-//                    retorno += i + colunaO--;
-//        }else{
-//            if(colunaD > colunaO)
-//                for(int i = linhaO; i >= linhaD; i--)
-//                    retorno += i + colunaO++;
-//            else
-//                for(int i = linhaO; i >= linhaD; i--)
-//                    retorno += i + colunaO--;
-//        }
-//
-//        return retorno;
-//    }
+
     @Override
     public String caminho(int linhaO, char colunaO, int linhaD, char colunaD) {
         StringBuilder caminho = new StringBuilder();

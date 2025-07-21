@@ -1,7 +1,7 @@
 package pecas;
 
 public class Torre extends Peca{
-    public Torre(String cor){
+    public Torre(String cor) throws CorInvalidaException {
         super(cor);
     }
 

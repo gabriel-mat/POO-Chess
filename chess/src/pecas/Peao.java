@@ -1,7 +1,7 @@
 package pecas;
 
 public class Peao extends Peca{
-    public Peao(String cor){
+    public Peao(String cor) throws CorInvalidaException {
         super(cor);
     }
 

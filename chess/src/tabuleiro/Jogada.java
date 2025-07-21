@@ -19,7 +19,7 @@ public class Jogada {
         caminho = new Caminho(tabuleiro.getCasa(linhaO, colunaO), tabuleiro.getCasa(linhaD, colunaD), tabuleiro);
     }
 
-    public boolean ehValida() {
+    public boolean ehValida()  throws CasaDeOrigemVaziaException {
         Peca pecaOrigem = tabuleiro.getPeca(linhaO, colunaO);
         Peca pecaDestino = tabuleiro.getPeca(linhaD, colunaD);
 
@@ -28,7 +28,7 @@ public class Jogada {
 
         // Checa se existe uma peça na casa de origem, para prevenir NullPointerException
         if (pecaOrigem == null) {
-            return false;
+            throw new CasaDeOrigemVaziaException("A casa de origem " + linhaO + colunaO + " está vazia.");
         }
 
         // Delega para a própria peça a validação do seu padrão de movimento.

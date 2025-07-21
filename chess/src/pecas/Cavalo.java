@@ -3,7 +3,7 @@ package pecas;
 import java.lang.Math;
 
 public class Cavalo extends Peca{
-    public Cavalo(String cor){
+    public Cavalo(String cor) throws CorInvalidaException{
         super(cor);
     }
 

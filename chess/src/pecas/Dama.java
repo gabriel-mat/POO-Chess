@@ -1,7 +1,7 @@
 package pecas;
 
 public class Dama extends Peca{
-    public Dama(String cor){
+    public Dama(String cor) throws CorInvalidaException {
         super(cor);
     }
 
