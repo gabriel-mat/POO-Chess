@@ -79,6 +79,7 @@ public class Gerenciador {
             return true;
         } catch (CorInvalidaException e) {
             System.out.println("ERRO CRÍTICO: " + e.getMessage());
+
             this.jogo = null;
             return false;
         }
@@ -104,6 +105,8 @@ public class Gerenciador {
             jogo = new Jogo(historico);
             System.out.println("Jogo carregado com sucesso");
             return true;
+        } catch (java.nio.file.InvalidPathException e) {
+            System.out.println("Erro. O nome do arquivo digitado contém caracteres inválidos.");
         } catch (FileNotFoundException e) {
             System.out.println("Erro. Arquivo não encontrado: " + nomeArquivo);
         } catch (IOException e) {
