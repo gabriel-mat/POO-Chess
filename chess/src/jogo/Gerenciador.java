@@ -89,13 +89,15 @@ public class Gerenciador {
         String nomeArquivo;
 
         while (true) {
-            System.out.println("Digite o nome do arquivo: ");
+            System.out.println("Digite o nome do arquivo (ou 'parar' para voltar ao menu): ");
             nomeArquivo = in.nextLine();
 
+            if (nomeArquivo.equalsIgnoreCase("parar"))
+                return;
             if (Files.exists(Paths.get(nomeArquivo)))
                 break;
 
-            System.out.println("Arquivo não encontrado. Tente novamente.\n");
+            System.out.println("Arquivo não encontrado. Tente novamente ou 'parar' para voltar ao menu.\n");
         }
 
         try {
