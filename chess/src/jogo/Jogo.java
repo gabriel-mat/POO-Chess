@@ -263,12 +263,4 @@ public class Jogo {
         pecas[i++] = new Rei("Preto");
         tabuleiro.colocarPeca(8, 'e', pecas[i - 1]);
     }
-
-    public Jogador getJ1() {
-        return j1;
-    }
-
-    public Jogador getJ2() {
-        return j2;
-    }
 }

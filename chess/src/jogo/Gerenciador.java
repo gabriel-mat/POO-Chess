@@ -205,11 +205,11 @@ public class Gerenciador {
 //        System.out.println(t2.desenho()); // deve retornar t
 //
 //        // caminho
-//        System.out.println(t1.caminho(1, 'a', 1, 'h')); // deve retornar 1a1h
-//        System.out.println(t1.caminho(1, 'a', 8, 'a')); // deve retornar 1a8a
-//        System.out.println(t1.caminho(1, 'a', 3, 'c')); // deve retornar vazio
-//        System.out.println(t2.caminho(8, 'h', 5, 'h')); // deve retornar 8h5h
-//        System.out.println(t2.caminho(8, 'h', 7, 'g')); // deve retornar vazio
+//        System.out.println(t1.caminho(1, 'a', 1, 'h'));
+//        System.out.println(t1.caminho(1, 'a', 8, 'a'));
+//        System.out.println(t1.caminho(1, 'a', 3, 'c'));
+//        System.out.println(t2.caminho(8, 'h', 5, 'h'));
+//        System.out.println(t2.caminho(8, 'h', 7, 'g'));
 //
 //        // movimentos válidos
 //        System.out.println(t1.movimentoValido(1, 'a', 1, 'h')); // true
